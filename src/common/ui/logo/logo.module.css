@@ -1,0 +1,19 @@
+.logo{
+	width: 191px;
+	height: 48px;
+	box-sizing: border-box;
+	background: #344472;
+	border: 3px solid #D9AD3A;
+	border-radius: 10px;
+	font-family: Orbitron;
+	font-size: 36px;
+	font-weight: 700;
+	line-height: 45.14px;
+	padding: 2px 8px;
+	display: flex; 
+    align-items: center;
+}
+.logo img {
+	margin: 8px 0;
+}
+

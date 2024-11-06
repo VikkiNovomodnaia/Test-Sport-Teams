@@ -1,0 +1,60 @@
+.page{
+	display: flex;
+	flex-direction: row;
+	height: 100vh;
+	font-family: Avenir;
+	align-items: center; 
+	justify-content: space-between;
+
+	.auth{
+		min-width: 327px;
+		max-width: 600px;
+		padding: 20px; 
+
+		h1 {
+			font-size: 36px;
+			font-weight: 400;
+			line-height: 49.18px;
+			color: #344472;
+			margin-bottom: 35px;
+		}
+
+		.passwordInput{
+			position: relative;
+
+			.showThisPassword{
+				position: absolute;
+    		right: 12px;
+				top: 38px;
+				cursor: pointer;
+				background: transparent; 
+				border: none;
+				z-index: 1;
+			}
+		}
+
+		.signInButton{
+			margin-bottom: 24px;
+		}
+		.registrationMessage{
+			display: flex;
+			justify-content: center;
+
+			.goToSignUp{
+				margin-left: 5px;
+				line-height: 22px;
+			}
+		}
+
+	}
+	.imageSide{
+		flex: 1;
+		background: #F5FBFF;
+		
+		.image{
+			justify-content: center;
+			padding: 20px; 
+		}
+	
+	}
+}
