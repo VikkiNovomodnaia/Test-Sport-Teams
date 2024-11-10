@@ -1,13 +1,8 @@
-import { apiFetch } from '../baseAPI'
+import { baseApi } from '../baseAPI'
 
-export const signIn = async (credentials: {login:string, password: string}) => {
-  console.log('Sending data to server:', credentials);
-
- return apiFetch('auth/SignIn',{
+export const signIn = async (loginData: {login:string, password: string}) => {
+ return baseApi('auth/SignIn',{
   method: 'POST',
-  headers:{
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(credentials)
+  body: JSON.stringify(loginData)
  })
 }

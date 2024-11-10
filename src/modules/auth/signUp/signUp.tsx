@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
+
 import { Button } from '../../../common/ui/button/button'
 import Checkbox from '../../../common/ui/checkbox/checkbox'
 import Input from '../../../common/ui/input/input'
 import CustomLink from '../../../common/ui/link/link'
-import CustomNotification from '../../../common/ui/notification/notification'
 import cls from './signUp.module.scss'
 import Image from '/src/assets/images/Group.png'
 
@@ -31,28 +31,12 @@ export const SignUp = () => {
 		},
 	});
 	
-		const [isVisible, setIsVisible] = useState(false);
-		const [notification, setNotification] = useState<{message: string}>({ message: ''});	
 		const [showPassword, setShowPassword] = useState(false);
 		const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
-		const togglePasswordVisibility = () => {
-			setShowPassword(prev => !prev);
-		};	
-		const toggleRepeatPasswordVisibility = () => {
-			setShowRepeatPassword(prev => !prev);
-		};
-
-		
-		const showNotification = (message: string) => {
-			console.log('Notification:', message);
-			setNotification({message});
-			setIsVisible(true);
-		};  
-
 	const onSubmit: SubmitHandler<FormValues> = async(data) => {
 		if (data.password !== data.repeatPassword) {
-			showNotification("Passwords do not match.");
+			alert("Passwords do not match.");
 			return;
 		}
 		try{
@@ -66,29 +50,22 @@ export const SignUp = () => {
 			if (response.token){
 				localStorage.setItem('authToken', response.token)
 				navigate('/signIn');
-				showNotification('Registration successful')
+				alert('Registration successful')
 			} else {
-				showNotification('Failed to retrieve token')
+				alert('Failed to retrieve token')
 			}
 			
 		} catch (error) {
 			console.error('Registration error:', error);
-			showNotification('Registration failed. Please try again.');
+			alert('Registration failed. Please try again.');
 		}
   };
 
 	return (
 		<div className={cls.page}>
-			{isVisible && (
-				<CustomNotification
-						message={notification.message}
-						className={cls.signUpErrorNotification}
-				/>
-			)}	
-
+			
 			<div className={cls.auth}>
-				<form 
-					onSubmit={handleSubmit(onSubmit)}>
+				<form onSubmit={handleSubmit(onSubmit)}>
 					<h1>Sign Up</h1>
 					<Controller 
 						name='UserName'
@@ -136,11 +113,12 @@ export const SignUp = () => {
 								{...field}
 								type={showPassword ? 'text' :'password'}
 								label='Password'
-								error={errors.password?.message}
-								
+								error={errors.password?.message}							
 								/>
 								<span 
-								onClick={togglePasswordVisibility}
+								onClick={()=>{
+									setShowPassword(prev => !prev)
+								}}
 								className={cls.showThisPassword}>
 								<img 
 									src={showPassword ? '/src/assets/icons/eye_rounded.png' : '/src/assets/icons/close_eye_rounded.png'} 
@@ -168,7 +146,9 @@ export const SignUp = () => {
 						
 								/>
 								<span 
-								onClick={toggleRepeatPasswordVisibility}
+								onClick={()=>{
+									setShowRepeatPassword(prev=>!prev)
+								}}
 								className={cls.showThisPassword}>
 								<img 
 									src={showRepeatPassword ? '/src/assets/icons/eye_rounded.png' : '/src/assets/icons/close_eye_rounded.png'} 
@@ -196,7 +176,6 @@ export const SignUp = () => {
 							/>
 						)}
 					/>
-
 				
 					<Button type='submit'className={cls.signUpButton}>
 						Sign Up

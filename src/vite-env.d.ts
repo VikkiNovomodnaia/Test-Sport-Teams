@@ -1,5 +1,10 @@
 /// <reference types="vite/client" />
 
-type TypePlayer = {
-	
+
+interface ImportMetaEnv {
+	readonly  VITE_BASE_URL: string
+
+}
+interface ImportMeta {
+  readonly env: ImportMetaEnv
 }

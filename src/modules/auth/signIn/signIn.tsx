@@ -1,11 +1,12 @@
-import { useState } from 'react'
+
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { Button } from '../../../common/ui/button/button'
 import Input from '../../../common/ui/input/input'
 import CustomLink from '../../../common/ui/link/link'
-import CustomNotification from '../../../common/ui/notification/notification'
 import cls from './signIn.module.scss'
 import Image from '/src/assets/images/Group.png'
+
+import { useState } from 'react'
 
 import { signIn } from '../../../api/auth/SignIn'
 
@@ -16,76 +17,50 @@ interface FormValues {
 
 export const SignIn = () => {
 
-		const { control, handleSubmit, formState:{errors} } = useForm<FormValues>({
+	const { register, control, handleSubmit, formState:{errors}} = useForm<FormValues>({
 			defaultValues: {
 				login: "",
 				password: "",
 			},
+			
 		});
-		const [isVisible, setIsVisible] = useState(false);
-	const [notification, setNotification] = useState<{message: string}>({ message: ''});	
-	const [showPassword, setShowPassword] = useState(false);
-	const togglePasswordVisibility = () => {
-			setShowPassword(prev => !prev);
-		};	
-	const showNotification = (message: string) => {
-			console.log('Notification:', message);
-			setNotification({message});
-			setIsVisible(true);
-		};  
-	const onSubmit: SubmitHandler<FormValues> = async(data) => {
-	
+
+		const [showPassword, setShowPassword] = useState(false)
+
+	const onSubmit: SubmitHandler<FormValues> = async(data) => {	
 		try{
 			const response = await signIn({
 				login: data.login, 
-				password: data.password,
-				
+				password: data.password,				
 			});
-			console.log('Login to account response:', response);
-			showNotification('Login to account successful')
-		} catch (error: unknown) {
-			console.error('Login to account error:', error);
+			alert( response.message || 'Login successful',);
+		} catch (error) {	
+			//alert('Login error:', error);
 			if (error instanceof Error) {
-				console.log('Error message:', error.message);
+				alert( error.message ||'Login to account failed. Please try again.');
 			}else {
-				showNotification('An unexpected error occurred.');
-			}
-			showNotification('Login to account failed. Please try again.');
+				alert('An unexpected error occurred.')
+			}			
 		}
   };
-
-
 	return (
 		<div className={cls.page}>
-			{isVisible && (
-				<CustomNotification
-						message={notification.message}
-						className={cls.signUpErrorNotification}
-				/>
-			)}	
 
 			<div className={cls.auth}>
-				<form
-					onSubmit={handleSubmit(onSubmit)}>
-					<h1>Sign In</h1>
-					<Controller 
-						name='login'
-						control={control}
-						rules={{
-              required: "Login is required",
-              pattern: {
-                value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
-                message: "Invalid email format"
-              }
-            }}
-						render={({ field })=>(
-							<Input 
-							{...field}
-							label='Login'
-							error={errors.login?.message}
-							/>
-						)}
+				<form onSubmit={handleSubmit(onSubmit)}>
+					<h1>Sign In</h1>				
+					<Input 
+						{...register('login',{
+								required: "Login is required",
+								pattern: {
+									value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
+									message: "Invalid email format"
+								}
+						})}							
+						label='Login'
+						error={errors.login?.message}
 					/>
+						
 					<Controller 
 						name='password'
 						control={control}
@@ -102,18 +77,18 @@ export const SignIn = () => {
 								{...field}
 								type={showPassword ? 'text' :'password'}
 								label='Password'
-								error={errors.password?.message}
-								
+								error={errors.password?.message}						
 								/>
 								<span 
-								onClick={togglePasswordVisibility}
+								onClick={()=>{
+									setShowPassword(prev => !prev)
+								} }
 								className={cls.showThisPassword}>
 								<img 
 									src={showPassword ? '/src/assets/icons/eye_rounded.png' : '/src/assets/icons/close_eye_rounded.png'} 
 									alt="Toggle password visibility" 
 								/>
 								</span>
-
 							</div>
 						)}
 					/>

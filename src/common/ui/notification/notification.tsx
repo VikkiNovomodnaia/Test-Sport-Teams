@@ -1,6 +1,6 @@
-import classNames from 'classnames'
+//import classNames from 'classnames'
 import React from 'react'
-import cls from './notification.module.scss'
+//import cls from './notification.scss'
 
 interface CustomNotificationProps{
     duration?: number;
@@ -11,7 +11,7 @@ const CustomNotification: React.FC<CustomNotificationProps> = ({className, messa
     return (
         <div 
             duration='3000'           
-            className={classNames(cls.notification, className)}
+            //className={classNames(cls.notification, className)}
             {...props}>
 
             <span>{message}</span>
