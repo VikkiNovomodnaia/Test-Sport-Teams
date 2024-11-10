@@ -9,7 +9,6 @@ export const baseApi = async (endpoint: string, options: RequestInit) => {
       ...(options.headers || {}),
     },
   });
-
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData || 'Request failed');

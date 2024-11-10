@@ -1,8 +1,11 @@
-
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
+import { useDispatch } from 'react-redux'
+import { setFormData } from '../../../redux/slices/formSlice'
+
 import { Button } from '../../../common/ui/button/button'
 import Input from '../../../common/ui/input/input'
 import CustomLink from '../../../common/ui/link/link'
+
 import cls from './signIn.module.scss'
 import Image from '/src/assets/images/Group.png'
 
@@ -21,13 +24,13 @@ export const SignIn = () => {
 			defaultValues: {
 				login: "",
 				password: "",
-			},
-			
+			},		
 		});
-
-		const [showPassword, setShowPassword] = useState(false)
+	const dispatch = useDispatch();
+	const [showPassword, setShowPassword] = useState(false)
 
 	const onSubmit: SubmitHandler<FormValues> = async(data) => {	
+		dispatch(setFormData(data))
 		try{
 			const response = await signIn({
 				login: data.login, 
