@@ -1,7 +1,8 @@
 import { setError } from '../redux/slices/errorSlice'
 import store from '../redux/store'
 
-const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://dev.trainee.dex-it.ru/api/';
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 export const baseApi = async (endpoint: string, options: RequestInit) => {
   try{
     const response = await fetch( `${BASE_URL}${endpoint}`, {
