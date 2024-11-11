@@ -11,6 +11,7 @@ import Image from '/src/assets/images/Group.png'
 
 import { useState } from 'react'
 
+import { useNavigate } from 'react-router-dom'
 import { signIn } from '../../../api/auth/SignIn'
 
 interface FormValues {
@@ -19,7 +20,7 @@ interface FormValues {
 }
 
 export const SignIn = () => {
-
+	const navigate = useNavigate();
 	const { register, control, handleSubmit, formState:{errors}} = useForm<FormValues>({
 			defaultValues: {
 				login: "",
@@ -36,7 +37,14 @@ export const SignIn = () => {
 				login: data.login, 
 				password: data.password,				
 			});
-			console.log( response.message || 'Login successful',);
+			
+			if(response && response.token){
+				console.log('Login successful');
+				navigate('/teams');
+			} else {
+				console.error('Login failed');
+    		alert('Login failed. Please check your credentials.');
+			}
 		} catch (error) {	
 			if (error instanceof Error) {
 				console.log('Login to account failed. Please try again.');

@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import { SignIn } from './modules/auth/signIn/signIn'
 import { SignUp } from './modules/auth/signUp/signUp'
+import { Teams } from './modules/dashboard/teams/teams'
 
 
  const App: React.FC = () => {
@@ -17,6 +18,7 @@ import { SignUp } from './modules/auth/signUp/signUp'
         <Route path="/" element={<SignIn/> } />
         <Route path="/signIn" element={<SignIn />} />
         <Route path="/signUp" element={<SignUp />} />
+        <Route path="/teams" element={<Teams />} />
         
       </Routes>
     </BrowserRouter>
