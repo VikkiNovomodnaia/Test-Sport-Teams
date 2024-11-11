@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-	UserName: "",
+	UserName: '',
 	login: '',
 	password: '',
 };
@@ -10,13 +10,17 @@ const formSlice = createSlice({
 	name: 'form',
 	initialState,
 	reducers:{
-		setFormData: (state, action) => {
+		setSignInData: (state, action) => {
 			state.login = action.payload.login;
 			state.password = action.payload.password;
-			state.UserName = action.payload.UserName;
 		},
+		setSignUpData: (state, action) => {
+			state.UserName = action.payload.UserName;
+			state.login = action.payload.login;
+			state.password = action.payload.password;
+		}
 	},
 });
 
-export const { setFormData } = formSlice.actions;
+export const { setSignInData, setSignUpData } = formSlice.actions;
 export default formSlice.reducer;

@@ -1,6 +1,6 @@
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { useDispatch } from 'react-redux'
-import { setFormData } from '../../../redux/slices/formSlice'
+import { setSignInData } from '../../../redux/slices/formSlice'
 
 import { Button } from '../../../common/ui/button/button'
 import Input from '../../../common/ui/input/input'
@@ -30,19 +30,18 @@ export const SignIn = () => {
 	const [showPassword, setShowPassword] = useState(false)
 
 	const onSubmit: SubmitHandler<FormValues> = async(data) => {	
-		dispatch(setFormData(data))
+		dispatch(setSignInData(data))
 		try{
 			const response = await signIn({
 				login: data.login, 
 				password: data.password,				
 			});
-			alert( response.message || 'Login successful',);
+			console.log( response.message || 'Login successful',);
 		} catch (error) {	
-			//alert('Login error:', error);
 			if (error instanceof Error) {
-				alert( error.message ||'Login to account failed. Please try again.');
+				console.log('Login to account failed. Please try again.');
 			}else {
-				alert('An unexpected error occurred.')
+				console.log('An unexpected error occurred.')
 			}			
 		}
   };
