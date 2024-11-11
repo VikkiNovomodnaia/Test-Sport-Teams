@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { useDispatch } from 'react-redux'
-import { setSignUpData } from '../../../redux/slices/formSlice'
+import { setLoading } from '../../../redux/slices/formSlice'
 
 import { Button } from '../../../common/ui/button/button'
 import Checkbox from '../../../common/ui/checkbox/checkbox'
@@ -38,7 +38,7 @@ export const SignUp = () => {
 	const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
 	const onSubmit: SubmitHandler<FormValues> = async(data) => {
-		dispatch(setSignUpData(data))
+		dispatch(setLoading(data))
 		if (data.password !== data.repeatPassword) {
 			alert("Passwords do not match.");
 			return;

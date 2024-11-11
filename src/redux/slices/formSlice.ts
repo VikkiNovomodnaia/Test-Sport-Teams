@@ -1,26 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-	UserName: '',
-	login: '',
-	password: '',
+	isLoading: false,
+  error: '',
 };
 
 const formSlice = createSlice({
 	name: 'form',
 	initialState,
 	reducers:{
-		setSignInData: (state, action) => {
-			state.login = action.payload.login;
-			state.password = action.payload.password;
+		setLoading:(state)=>{
+			state.isLoading = true;
+			state.error = '';
 		},
-		setSignUpData: (state, action) => {
-			state.UserName = action.payload.UserName;
-			state.login = action.payload.login;
-			state.password = action.payload.password;
+		setError: (state, action) => {
+			state.error = action.payload;
+			state.isLoading = false;
+		},
+		reset: (state) => {
+			state.isLoading = false;
+      state.error = '';
 		}
 	},
 });
 
-export const { setSignInData, setSignUpData } = formSlice.actions;
+export const { setLoading, setError, reset } = formSlice.actions;
 export default formSlice.reducer;

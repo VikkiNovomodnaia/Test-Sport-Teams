@@ -1,6 +1,6 @@
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { useDispatch } from 'react-redux'
-import { setSignInData } from '../../../redux/slices/formSlice'
+import { AppDispatch } from '../../../redux/store'
 
 import { Button } from '../../../common/ui/button/button'
 import Input from '../../../common/ui/input/input'
@@ -27,18 +27,17 @@ export const SignIn = () => {
 				password: "",
 			},		
 		});
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
 	const [showPassword, setShowPassword] = useState(false)
 
 	const onSubmit: SubmitHandler<FormValues> = async(data) => {	
-		dispatch(setSignInData(data))
 		try{
-			const response = await signIn({
+			const response = await dispatch(signIn({
 				login: data.login, 
 				password: data.password,				
-			});
+			})).unwrap();
 			
-			if(response && response.token){
+			if(response?.token){
 				console.log('Login successful');
 				navigate('/teams');
 			} else {
@@ -46,11 +45,7 @@ export const SignIn = () => {
     		alert('Login failed. Please check your credentials.');
 			}
 		} catch (error) {	
-			if (error instanceof Error) {
-				console.log('Login to account failed. Please try again.');
-			}else {
-				console.log('An unexpected error occurred.')
-			}			
+			console.error('Error during sign-in', error);
 		}
   };
 	return (

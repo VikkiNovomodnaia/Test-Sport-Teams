@@ -1,7 +1,8 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import CustomNotification from './common/ui/notification/notification'
+import { hideNotification } from './redux/slices/notificationSlice'
 
 import { SignIn } from './modules/auth/signIn/signIn'
 import { SignUp } from './modules/auth/signUp/signUp'
@@ -9,11 +10,24 @@ import { Teams } from './modules/dashboard/teams/teams'
 
 
  const App: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const notification = useSelector((state: { notification: {message:'', visible:false} }) => state.notification);
+  
+  React.useEffect( () => {
+    if(notification?.visible) {
+      const timer = setTimeout(()=>{
+        dispatch(hideNotification());
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [notification?.visible, dispatch]);
+
   return (
     <BrowserRouter>
-      <ToastContainer
-        className="notification"
-        position="top-right" autoClose={5000} />
+     <div>
+      {notification?.visible && <CustomNotification message={notification.message} />}
+     </div>
       <Routes>
         <Route path="/" element={<SignIn/> } />
         <Route path="/signIn" element={<SignIn />} />
