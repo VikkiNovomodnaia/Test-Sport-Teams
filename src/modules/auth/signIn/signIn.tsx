@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '../../../redux/store'
@@ -5,14 +7,11 @@ import { AppDispatch } from '../../../redux/store'
 import { Button } from '../../../common/ui/button/button'
 import Input from '../../../common/ui/input/input'
 import CustomLink from '../../../common/ui/link/link'
-
 import cls from './signIn.module.scss'
 import Image from '/src/assets/images/Group.png'
 
-import { useState } from 'react'
-
 import { useNavigate } from 'react-router-dom'
-import { signIn } from '../../../api/auth/SignIn'
+import { signIn } from '../../../redux/slices/auth/authThunk'
 
 interface FormValues {
 	login: string;
@@ -36,6 +35,7 @@ export const SignIn = () => {
 				login: data.login, 
 				password: data.password,				
 			})).unwrap();
+			console.log(response); 
 			
 			if(response?.token){
 				console.log('Login successful');

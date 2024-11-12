@@ -1,7 +1,8 @@
 import { useState } from 'react'
+
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { useDispatch } from 'react-redux'
-import { setLoading } from '../../../redux/slices/formSlice'
+import { AppDispatch } from '../../../redux/store'
 
 import { Button } from '../../../common/ui/button/button'
 import Checkbox from '../../../common/ui/checkbox/checkbox'
@@ -11,7 +12,7 @@ import cls from './signUp.module.scss'
 import Image from '/src/assets/images/Group.png'
 
 import { useNavigate } from 'react-router-dom'
-import { signUp } from '../../../api/auth/SignUp'
+import { signUp } from '../../../redux/slices/auth/authThunk'
 
 export interface FormValues {
 	UserName: string;
@@ -33,22 +34,22 @@ export const SignUp = () => {
 		},
 	});
 	
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
 	const [showPassword, setShowPassword] = useState(false);
 	const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
 	const onSubmit: SubmitHandler<FormValues> = async(data) => {
-		dispatch(setLoading(data))
+		
 		if (data.password !== data.repeatPassword) {
 			alert("Passwords do not match.");
 			return;
 		}
 		try{
-			const response = await signUp({
+			const response = await dispatch(signUp({
 				UserName: data.UserName, 
 				login: data.login, 
 				password: data.password,				
-			});
+			})).unwrap();
 			console.log('Registration response:', response);
 			if (response.token){
 				localStorage.setItem('authToken', response.token)

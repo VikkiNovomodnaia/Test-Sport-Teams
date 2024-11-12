@@ -1,8 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+interface NotificationState {
+  message: string | null;
+	visible: boolean;
+}
+const initialState: NotificationState = {
+  message: null,
+	visible: false
+};
+
  const notificationSlice = createSlice({
 	name: 'notification',
-	initialState:{message: '', visible: false},
+	initialState,
 	reducers:{ 
 		showNotification: (state, action) => {
 			state.message = action.payload;
